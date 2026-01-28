@@ -1,0 +1,72 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Setup Admin - SMM Panel</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+    <h1>Setup Admin User</h1>
+    
+    <div>
+        <input type="email" id="adminEmail" placeholder="Admin Email">
+        <input type="password" id="adminPassword" placeholder="Admin Password">
+        <button onclick="createAdmin()">Create Admin</button>
+    </div>
+    
+    <div id="message" style="margin-top: 20px;"></div>
+    
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxjgB8W8MucekdV77wVsoK8F84XYAItFs",
+            authDomain: "smmpanel-ec5c7.firebaseapp.com",
+            projectId: "smmpanel-ec5c7",
+            storageBucket: "smmpanel-ec5c7.firebasestorage.app",
+            messagingSenderId: "822614801525",
+            appId: "1:822614801525:web:4d27524aa2a1a84c068c3c"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        async function createAdmin() {
+            const email = document.getElementById('adminEmail').value;
+            const password = document.getElementById('adminPassword').value;
+            const message = document.getElementById('message');
+            
+            if (!email || !password) {
+                message.innerHTML = '<span style="color: red;">Please enter email and password</span>';
+                return;
+            }
+            
+            try {
+                // Create admin user
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Create admin document in Firestore
+                await db.collection('users').doc(user.uid).set({
+                    email: email,
+                    name: 'Admin',
+                    balance: 0,
+                    role: 'admin',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    isActive: true
+                });
+                
+                message.innerHTML = '<span style="color: green;">✅ Admin created successfully! You can now login at /auth/login.html</span>';
+                
+                // Sign out after creating admin
+                await auth.signOut();
+                
+            } catch (error) {
+                message.innerHTML = `<span style="color: red;">Error: ${error.message}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>
