@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SMM Panel</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/auth.css">
+    <link rel="stylesheet" href="../css/utilities.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-rocket"></i>
+                    SMMPanel
+                </div>
+                <h1 class="auth-title">Welcome Back</h1>
+                <p class="auth-subtitle">Login to your account</p>
+            </div>
+            
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" class="auth-input" placeholder="Email Address" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" class="auth-input" placeholder="Password" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="auth-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                
+                <div id="errorMessage" class="alert alert-error mt-3" style="display: none;"></div>
+            </form>
+            
+            <div class="auth-links">
+                <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+                <p><a href="forgot.html">Forgot Password?</a></p>
+            </div>
+            
+            <div class="divider">
+                <span>Or continue with</span>
+            </div>
+            
+            <div class="social-login">
+                <button class="social-btn google-btn">
+                    <i class="fab fa-google"></i> Google
+                </button>
+                <button class="social-btn github-btn">
+                    <i class="fab fa-github"></i> GitHub
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
+    <!-- Login Script -->
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAxjgB8W8MucekdV77wVsoK8F84XYAItFs",
+            authDomain: "smmpanel-ec5c7.firebaseapp.com",
+            projectId: "smmpanel-ec5c7",
+            storageBucket: "smmpanel-ec5c7.firebasestorage.app",
+            messagingSenderId: "822614801525",
+            appId: "1:822614801525:web:4d27524aa2a1a84c068c3c",
+            measurementId: "G-PQCEDCMZMZ"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // Login Form Handler
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Show loading
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Sign in with email and password
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Get user data from Firestore
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    
+                    // Check if user is admin
+                    if (userData.role === 'admin') {
+                        window.location.href = '../admin/dashboard.html';
+                    } else {
+                        window.location.href = '../user/dashboard.html';
+                    }
+                } else {
+                    // Create user document if it doesn't exist
+                    await db.collection('users').doc(user.uid).set({
+                        email: user.email,
+                        name: user.email.split('@')[0],
+                        balance: 0,
+                        role: 'user',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    window.location.href = '../user/dashboard.html';
+                }
+                
+            } catch (error) {
+                // Handle errors
+                errorMessage.textContent = error.message;
+                errorMessage.style.display = 'block';
+                
+                // Reset button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+        
+        // Google Login
+        document.querySelector('.google-btn').addEventListener('click', async () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            try {
+                const result = await auth.signInWithPopup(provider);
+                const user = result.user;
+                
+                // Check if user exists in Firestore
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                
+                if (!userDoc.exists) {
+                    // Create new user
+                    await db.collection('users').doc(user.uid).set({
+                        email: user.email,
+                        name: user.displayName || user.email.split('@')[0],
+                        balance: 0,
+                        role: 'user',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                        photoURL: user.photoURL
+                    });
+                } else {
+                    // Update last login
+                    await db.collection('users').doc(user.uid).update({
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                
+                window.location.href = '../user/dashboard.html';
+                
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = error.message;
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        });
+        
+        // GitHub Login
+        document.querySelector('.github-btn').addEventListener('click', async () => {
+            const provider = new firebase.auth.GithubAuthProvider();
+            
+            try {
+                const result = await auth.signInWithPopup(provider);
+                const user = result.user;
+                
+                // Check if user exists in Firestore
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                
+                if (!userDoc.exists) {
+                    // Create new user
+                    await db.collection('users').doc(user.uid).set({
+                        email: user.email,
+                        name: user.displayName || user.email.split('@')[0],
+                        balance: 0,
+                        role: 'user',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                        photoURL: user.photoURL
+                    });
+                }
+                
+                window.location.href = '../user/dashboard.html';
+                
+            } catch (error) {
+                document.getElementById('errorMessage').textContent = error.message;
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        });
+        
+        // Check if user is already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, redirect to dashboard
+                window.location.href = '../user/dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html>
