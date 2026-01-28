@@ -3,900 +3,485 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - NexusPanel SMM Services</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <title>Dashboard - SMM Panel</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- DataTables for better tables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
     <style>
         :root {
             --primary: #4361ee;
-            --secondary: #3f37c9;
-            --success: #4ade80;
-            --warning: #f59e0b;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --warning: #f8961e;
             --danger: #f72585;
-            --dark: #1e293b;
-            --darker: #0f172a;
-            --light: #f8fafc;
-            --gray: #64748b;
-            --border: #e2e8f0;
-            --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --transition: all 0.3s ease;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
         }
         
         body {
-            font-family: 'Inter', sans-serif;
-            color: var(--dark);
-            background-color: #f1f5f9;
-            display: flex;
-            min-height: 100vh;
+            background-color: #f5f7fb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
-        /* Sidebar Styles */
         .sidebar {
-            width: 260px;
-            background: linear-gradient(180deg, var(--darker) 0%, #1e293b 100%);
+            background: var(--dark);
             color: white;
-            height: 100vh;
+            min-height: 100vh;
             position: fixed;
-            left: 0;
-            top: 0;
-            z-index: 100;
-            transition: var(--transition);
-            box-shadow: 3px 0 15px rgba(0, 0, 0, 0.25);
+            width: 250px;
+            z-index: 1000;
+            box-shadow: 3px 0 10px rgba(0,0,0,0.1);
         }
         
-        .sidebar-header {
-            padding: 25px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 24px;
-        }
-        
-        .logo-icon {
-            margin-right: 10px;
-            font-size: 28px;
-        }
-        
-        .sidebar-menu {
-            padding: 20px 0;
-            list-style: none;
-        }
-        
-        .sidebar-menu li {
-            padding: 0 20px;
-            margin-bottom: 5px;
-        }
-        
-        .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            color: #cbd5e1;
-            text-decoration: none;
-            padding: 12px 15px;
-            border-radius: 10px;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-        
-        .sidebar-menu a:hover, 
-        .sidebar-menu a.active {
-            background: rgba(67, 97, 238, 0.2);
-            color: white;
-            transform: translateX(5px);
-        }
-        
-        .sidebar-menu a i {
-            margin-right: 12px;
-            font-size: 20px;
-            width: 24px;
-            text-align: center;
-        }
-        
-        .sidebar-footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
+        .main-content {
+            margin-left: 250px;
             padding: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            transition: margin-left 0.3s;
         }
         
-        .user-profile {
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            .main-content {
+                margin-left: 70px;
+            }
+            .sidebar .nav-text {
+                display: none;
+            }
+        }
+        
+        .navbar-top {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-bottom: 25px;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+        
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .stat-card .card-icon {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+        
+        .orders-card .card-icon {
+            background: rgba(244, 114, 182, 0.1);
+            color: var(--danger);
+        }
+        
+        .services-card .card-icon {
+            background: rgba(76, 201, 240, 0.1);
+            color: var(--success);
+        }
+        
+        .recent-orders {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .order-status {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-completed {
+            background: #d1f7c4;
+            color: #2e7d32;
+        }
+        
+        .status-pending {
+            background: #ffeaa7;
+            color: #e17055;
+        }
+        
+        .status-processing {
+            background: #a29bfe;
+            color: #6c5ce7;
+        }
+        
+        .status-cancelled {
+            background: #fab1a0;
+            color: #d63031;
+        }
+        
+        .quick-action-btn {
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s;
+        }
+        
+        .quick-action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            color: white;
+        }
+        
+        .loader {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
         
         .user-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 12px;
-            flex-shrink: 0;
-        }
-        
-        .user-info {
-            overflow: hidden;
-        }
-        
-        .user-name {
-            font-weight: 600;
-            font-size: 15px;
-        }
-        
-        .user-email {
-            font-size: 13px;
-            color: #94a3b8;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: block;
-        }
-        
-        /* Main Content Styles */
-        .main-content {
-            flex: 1;
-            margin-left: 260px;
-            transition: var(--transition);
-        }
-        
-        /* Top Navigation */
-        .top-nav {
-            background: white;
-            box-shadow: var(--card-shadow);
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 30px;
-            position: sticky;
-            top: 0;
-            z-index: 99;
-        }
-        
-        .menu-toggle {
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--dark);
-            cursor: pointer;
-            display: none;
-        }
-        
-        .search-bar {
-            flex: 1;
-            max-width: 500px;
-            position: relative;
-            margin: 0 30px;
-        }
-        
-        .search-bar input {
-            width: 100%;
-            padding: 10px 20px 10px 40px;
-            border-radius: 50px;
-            border: 1px solid var(--border);
-            font-family: 'Inter', sans-serif;
-            font-size: 16px;
-            transition: var(--transition);
-        }
-        
-        .search-bar input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.15);
-        }
-        
-        .search-bar i {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray);
-        }
-        
-        .nav-icons {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .nav-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
-            background: #f1f5f9;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary);
-            font-size: 20px;
-            cursor: pointer;
-            position: relative;
-            transition: var(--transition);
-        }
-        
-        .nav-icon:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
-        }
-        
-        .notification-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: var(--danger);
-            color: white;
-            font-size: 10px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-        }
-        
-        .user-menu span {
-            font-weight: 500;
-            display: none;
-        }
-        
-        /* Dashboard Content */
-        .dashboard-container {
-            padding: 30px;
-        }
-        
-        .page-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 32px;
-            margin-bottom: 30px;
-            color: var(--darker);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .page-title i {
-            color: var(--primary);
-            font-size: 36px;
-        }
-        
-        /* Stats Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        
-        .stat-card {
-            background: white;
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: var(--card-shadow);
-            transition: var(--transition);
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .stat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-        
-        .stat-icon.primary {
-            background: rgba(67, 97, 238, 0.15);
-            color: var(--primary);
-        }
-        
-        .stat-icon.success {
-            background: rgba(74, 222, 128, 0.15);
-            color: var(--success);
-        }
-        
-        .stat-icon.warning {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--warning);
-        }
-        
-        .stat-icon.danger {
-            background: rgba(247, 37, 133, 0.15);
-            color: var(--danger);
-        }
-        
-        .stat-value {
-            font-family: 'Poppins', sans-serif;
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            color: var(--gray);
-            font-size: 16px;
-        }
-        
-        .stat-trend {
-            display: flex;
-            align-items: center;
-            font-size: 14px;
-            margin-top: 8px;
-        }
-        
-        .trend-up {
-            color: var(--success);
-            margin-right: 5px;
-        }
-        
-        .trend-down {
-            color: var(--danger);
-            margin-right: 5px;
-        }
-        
-        /* Charts & Tables */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 16px;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 25px;
-        }
-        
-        .card-header {
-            padding: 20px 25px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .card-title {
-            font-family: 'Poppins', sans-serif;
-            font-size: 22px;
-            font-weight: 600;
-            color: var(--darker);
-        }
-        
-        .card-body {
-            padding: 20px 25px;
-        }
-        
-        .orders-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        .orders-table th {
-            text-align: left;
-            padding: 12px 15px;
-            font-weight: 600;
-            color: var(--gray);
-            border-bottom: 2px solid var(--border);
-            font-size: 15px;
-        }
-        
-        .orders-table td {
-            padding: 15px;
-            border-bottom: 1px solid var(--border);
-            color: var(--dark);
-        }
-        
-        .orders-table tr:last-child td {
-            border-bottom: none;
-        }
-        
-        .orders-table tr:hover {
-            background-color: #f8fafc;
-        }
-        
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 500;
-            display: inline-block;
-        }
-        
-        .status-pending {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--warning);
-        }
-        
-        .status-completed {
-            background: rgba(74, 222, 128, 0.15);
-            color: var(--success);
-        }
-        
-        .status-processing {
-            background: rgba(67, 97, 238, 0.15);
-            color: var(--primary);
-        }
-        
-        .status-failed {
-            background: rgba(247, 37, 133, 0.15);
-            color: var(--danger);
-        }
-        
-        .platform-icon {
-            font-size: 20px;
-            margin-right: 8px;
-        }
-        
-        .quick-actions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .action-btn {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(76, 201, 240, 0.1) 100%);
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            border: 2px solid transparent;
-            text-align: center;
-        }
-        
-        .action-btn:hover {
-            background: white;
-            transform: translateY(-3px);
-            box-shadow: var(--card-shadow);
-            border-color: var(--primary);
-        }
-        
-        .action-btn i {
-            font-size: 32px;
-            margin-bottom: 12px;
-        }
-        
-        .action-btn span {
-            font-size: 16px;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 1100px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 992px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            
-            .sidebar.active {
-                transform: translateX(0);
-            }
-            
-            .main-content {
-                margin-left: 0;
-            }
-            
-            .main-content.sidebar-active {
-                margin-left: 260px;
-            }
-            
-            .menu-toggle {
-                display: block;
-            }
-            
-            .search-bar {
-                display: none;
-            }
-            
-            .user-menu span {
-                display: block;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .top-nav {
-                padding: 0 15px;
-            }
-            
-            .dashboard-container {
-                padding: 20px 15px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .page-title {
-                font-size: 28px;
-            }
-            
-            .quick-actions {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .sidebar-header {
-                padding: 15px;
-            }
-            
-            .sidebar-menu li {
-                padding: 0 15px;
-            }
-            
-            .sidebar-menu a {
-                padding: 10px 12px;
-                font-size: 15px;
-            }
-            
-            .sidebar-menu a i {
-                margin-right: 8px;
-                font-size: 18px;
-            }
-            
-            .user-info span {
-                display: none;
-            }
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
     <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-        <div class="sidebar-header">
-            <a href="dashboard.html" class="logo">
-                <span class="logo-icon">🚀</span>
-                NexusPanel
-            </a>
-        </div>
-        
-        <ul class="sidebar-menu">
-            <li><a href="dashboard.html" class="active"><span>📊</span> Dashboard</a></li>
-            <li><a href="services.html"><span>🛠️</span> Services</a></li>
-            <li><a href="new-order.html"><span>➕</span> New Order</a></li>
-            <li><a href="order-history.html"><span>📋</span> Order History</a></li>
-            <li><a href="wallet.html"><span>💰</span> Wallet</a></li>
-            <li><a href="tickets.html"><span>🎫</span> Support Tickets</a></li>
-            <li><a href="profile.html"><span>👤</span> Profile Settings</a></li>
-            <li><a href="api.html"><span>🔌</span> API Documentation</a></li>
-        </ul>
-        
-        <div class="sidebar-footer">
-            <div class="user-profile">
-                <div class="user-avatar">JD</div>
-                <div class="user-info">
-                    <span class="user-name">John Doe</span>
-                    <span class="user-email">johndoe@example.com</span>
-                </div>
+    <div class="sidebar">
+        <div class="p-4">
+            <h4 class="text-center mb-4">
+                <i class="fas fa-rocket"></i>
+                <span class="nav-text"> SMM Panel</span>
+            </h4>
+            
+            <!-- User Info -->
+            <div class="text-center mb-4 d-none d-md-block">
+                <img src="https://ui-avatars.com/api/?name=User&background=4361ee&color=fff" 
+                     class="user-avatar mb-2" id="userAvatar">
+                <h6 id="userName">Loading...</h6>
+                <small class="text-muted" id="userEmail">user@example.com</small>
             </div>
+            
+            <!-- Navigation Menu -->
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link active">
+                        <i class="fas fa-home"></i>
+                        <span class="nav-text"> Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="services.html" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="nav-text"> Services</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="new-order.html" class="nav-link">
+                        <i class="fas fa-plus-circle"></i>
+                        <span class="nav-text"> New Order</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="order-history.html" class="nav-link">
+                        <i class="fas fa-history"></i>
+                        <span class="nav-text"> Order History</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="wallet.html" class="nav-link">
+                        <i class="fas fa-wallet"></i>
+                        <span class="nav-text"> Wallet</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="tickets.html" class="nav-link">
+                        <i class="fas fa-headset"></i>
+                        <span class="nav-text"> Support Tickets</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="api.html" class="nav-link">
+                        <i class="fas fa-code"></i>
+                        <span class="nav-text"> API</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span class="nav-text"> Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-4">
+                    <a href="#" class="nav-link text-danger" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="nav-text"> Logout</span>
+                    </a>
+                </li>
+            </ul>
         </div>
-    </aside>
-
+    </div>
+    
     <!-- Main Content -->
     <div class="main-content">
-        <!-- Top Navigation -->
-        <nav class="top-nav">
-            <button class="menu-toggle" id="menu-toggle">☰</button>
-            
-            <div class="search-bar">
-                <span>🔍</span>
-                <input type="text" placeholder="Search services, orders...">
-            </div>
-            
-            <div class="nav-icons">
-                <div class="nav-icon">
-                    <span>🔔</span>
-                    <span class="notification-badge">3</span>
-                </div>
-                <div class="nav-icon">
-                    <span>💬</span>
-                </div>
-                <div class="user-menu">
-                    <div class="user-avatar">JD</div>
-                    <span>John Doe</span>
-                    <span>▼</span>
+        <!-- Top Navbar -->
+        <nav class="navbar-top">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div>
+                        <h4 class="mb-0">Dashboard</h4>
+                        <small class="text-muted" id="welcomeMessage">Welcome back!</small>
+                    </div>
+                    
+                    <div class="d-flex align-items-center gap-3">
+                        <!-- Notification Bell -->
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary position-relative" type="button" 
+                                    data-bs-toggle="dropdown">
+                                <i class="fas fa-bell"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="notificationBadge">
+                                    0
+                                </span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end" id="notificationList">
+                                <li><h6 class="dropdown-header">Notifications</h6></li>
+                                <li><a class="dropdown-item" href="#">No new notifications</a></li>
+                            </ul>
+                        </div>
+                        
+                        <!-- User Menu -->
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center gap-2" 
+                                    type="button" data-bs-toggle="dropdown">
+                                <span id="topUserName">User</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="profile.html"><i class="fas fa-user me-2"></i>Profile</a></li>
+                                <li><a class="dropdown-item" href="wallet.html"><i class="fas fa-wallet me-2"></i>Wallet</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#" id="mobileLogoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
-
-        <!-- Dashboard Content -->
-        <div class="dashboard-container">
-            <h1 class="page-title"><span>📊</span> Dashboard</h1>
-            
-            <!-- Stats Cards -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-value">$127.50</div>
-                            <div class="stat-label">Account Balance</div>
+        
+        <!-- Quick Actions -->
+        <div class="row mb-4">
+            <div class="col-md-3 col-sm-6">
+                <a href="new-order.html" class="quick-action-btn" style="background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);">
+                    <i class="fas fa-plus-circle fa-2x"></i>
+                    <div>
+                        <h6 class="mb-1">New Order</h6>
+                        <small>Place new SMM order</small>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a href="wallet.html" class="quick-action-btn" style="background: linear-gradient(135deg, #4cc9f0 0%, #4361ee 100%);">
+                    <i class="fas fa-wallet fa-2x"></i>
+                    <div>
+                        <h6 class="mb-1">Add Funds</h6>
+                        <small>Top up your wallet</small>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a href="services.html" class="quick-action-btn" style="background: linear-gradient(135deg, #f72585 0%, #b5179e 100%);">
+                    <i class="fas fa-shopping-cart fa-2x"></i>
+                    <div>
+                        <h6 class="mb-1">View Services</h6>
+                        <small>Browse all services</small>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <a href="tickets.html" class="quick-action-btn" style="background: linear-gradient(135deg, #f8961e 0%, #f3722c 100%);">
+                    <i class="fas fa-headset fa-2x"></i>
+                    <div>
+                        <h6 class="mb-1">Support</h6>
+                        <small>Get help & support</small>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <!-- Stats Cards -->
+        <div class="row">
+            <div class="col-xl-3 col-md-6">
+                <div class="card dashboard-card stat-card">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="fas fa-wallet"></i>
                         </div>
-                        <div class="stat-icon primary">💰</div>
-                    </div>
-                    <div class="stat-trend">
-                        <span class="trend-up">↑</span> $15.00 added today
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-value">42</div>
-                            <div class="stat-label">Total Orders</div>
-                        </div>
-                        <div class="stat-icon success">📋</div>
-                    </div>
-                    <div class="stat-trend">
-                        <span class="trend-up">↑</span> 3 new orders today
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-value">8</div>
-                            <div class="stat-label">Pending Orders</div>
-                        </div>
-                        <div class="stat-icon warning">⏳</div>
-                    </div>
-                    <div class="stat-trend">
-                        <span class="trend-down">↓</span> 2 completed in last hour
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <div class="stat-header">
-                        <div>
-                            <div class="stat-value">98%</div>
-                            <div class="stat-label">Success Rate</div>
-                        </div>
-                        <div class="stat-icon danger">✅</div>
-                    </div>
-                    <div class="stat-trend">
-                        <span class="trend-up">↑</span> Higher than average
+                        <h5 class="card-title">Current Balance</h5>
+                        <h2 class="card-text text-primary" id="userBalance">$0.00</h2>
+                        <p class="card-text"><small class="text-muted">Available for orders</small></p>
                     </div>
                 </div>
             </div>
             
-            <!-- Dashboard Grid -->
-            <div class="dashboard-grid">
-                <!-- Recent Orders -->
-                <div class="card">
-                    <div class="card-header">
-                        <h2 class="card-title">Recent Orders</h2>
-                        <a href="order-history.html" style="color: var(--primary); text-decoration: none; font-weight: 500;">View All</a>
-                    </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card dashboard-card orders-card">
                     <div class="card-body">
-                        <table class="orders-table">
-                            <thead>
-                                <tr>
-                                    <th>Order ID</th>
-                                    <th>Service</th>
-                                    <th>Quantity</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>#ORD-78945</td>
-                                    <td><span class="platform-icon">❤️</span> Instagram Likes</td>
-                                    <td>5,000</td>
-                                    <td><span class="status-badge status-completed">Completed</span></td>
-                                    <td>Jan 27, 2026</td>
-                                </tr>
-                                <tr>
-                                    <td>#ORD-78944</td>
-                                    <td><span class="platform-icon">👥</span> Telegram Members</td>
-                                    <td>1,000</td>
-                                    <td><span class="status-badge status-processing">Processing</span></td>
-                                    <td>Jan 27, 2026</td>
-                                </tr>
-                                <tr>
-                                    <td>#ORD-78943</td>
-                                    <td><span class="platform-icon">▶️</span> YouTube Views</td>
-                                    <td>10,000</td>
-                                    <td><span class="status-badge status-completed">Completed</span></td>
-                                    <td>Jan 26, 2026</td>
-                                </tr>
-                                <tr>
-                                    <td>#ORD-78942</td>
-                                    <td><span class="platform-icon">🔥</span> TikTok Followers</td>
-                                    <td>2,500</td>
-                                    <td><span class="status-badge status-pending">Pending</span></td>
-                                    <td>Jan 26, 2026</td>
-                                </tr>
-                                <tr>
-                                    <td>#ORD-78941</td>
-                                    <td><span class="platform-icon">💬</span> Twitter Comments</td>
-                                    <td>500</td>
-                                    <td><span class="status-badge status-failed">Failed</span></td>
-                                    <td>Jan 25, 2026</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="card-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h5 class="card-title">Today's Orders</h5>
+                        <h2 class="card-text" style="color: #f72585;" id="todayOrders">0</h2>
+                        <p class="card-text"><small class="text-muted">Orders placed today</small></p>
                     </div>
                 </div>
-                
-                <!-- Quick Actions & Stats -->
-                <div>
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Quick Actions</h2>
+            </div>
+            
+            <div class="col-xl-3 col-md-6">
+                <div class="card dashboard-card services-card">
+                    <div class="card-body">
+                        <div class="card-icon">
+                            <i class="fas fa-list"></i>
                         </div>
-                        <div class="card-body">
-                            <div class="quick-actions">
-                                <a href="new-order.html" class="action-btn">
-                                    <span>✨</span>
-                                    <span>New Order</span>
-                                </a>
-                                <a href="wallet.html" class="action-btn">
-                                    <span>💳</span>
-                                    <span>Add Funds</span>
-                                </a>
-                                <a href="services.html" class="action-btn">
-                                    <span>📚</span>
-                                    <span>Services List</span>
-                                </a>
-                                <a href="tickets.html" class="action-btn">
-                                    <span>🆘</span>
-                                    <span>Support</span>
-                                </a>
-                            </div>
-                        </div>
+                        <h5 class="card-title">Available Services</h5>
+                        <h2 class="card-text" style="color: #4cc9f0;" id="totalServices">0</h2>
+                        <p class="card-text"><small class="text-muted">SMM services available</small></p>
                     </div>
-                    
-                    <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Service Distribution</h2>
+                </div>
+            </div>
+            
+            <div class="col-xl-3 col-md-6">
+                <div class="card dashboard-card">
+                    <div class="card-body">
+                        <div class="card-icon" style="background: rgba(248, 150, 30, 0.1); color: #f8961e;">
+                            <i class="fas fa-chart-line"></i>
                         </div>
-                        <div class="card-body" style="padding: 15px;">
-                            <div style="display: flex; flex-direction: column; gap: 15px;">
-                                <div>
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                        <span>Instagram</span>
-                                        <span>45%</span>
-                                    </div>
-                                    <div style="background: #e2e8f0; border-radius: 10px; height: 10px; overflow: hidden;">
-                                        <div style="background: var(--primary); width: 45%; height: 100%; border-radius: 10px;"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                        <span>YouTube</span>
-                                        <span>25%</span>
-                                    </div>
-                                    <div style="background: #e2e8f0; border-radius: 10px; height: 10px; overflow: hidden;">
-                                        <div style="background: var(--success); width: 25%; height: 100%; border-radius: 10px;"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                        <span>TikTok</span>
-                                        <span>15%</span>
-                                    </div>
-                                    <div style="background: #e2e8f0; border-radius: 10px; height: 10px; overflow: hidden;">
-                                        <div style="background: var(--warning); width: 15%; height: 100%; border-radius: 10px;"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                        <span>Twitter</span>
-                                        <span>10%</span>
-                                    </div>
-                                    <div style="background: #e2e8f0; border-radius: 10px; height: 10px; overflow: hidden;">
-                                        <div style="background: var(--danger); width: 10%; height: 100%; border-radius: 10px;"></div>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                        <span>Telegram</span>
-                                        <span>5%</span>
-                                    </div>
-                                    <div style="background: #e2e8f0; border-radius: 10px; height: 10px; overflow: hidden;">
-                                        <div style="background: #8b5cf6; width: 5%; height: 100%; border-radius: 10px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <h5 class="card-title">Total Spent</h5>
+                        <h2 class="card-text" style="color: #f8961e;" id="totalSpent">$0.00</h2>
+                        <p class="card-text"><small class="text-muted">Lifetime spending</small></p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <script>
-        // Toggle sidebar on mobile
-        const menuToggle = document.getElementById('menu-toggle');
-        const sidebar = document.querySelector('.sidebar');
-        const mainContent = document.querySelector('.main-content');
         
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-            mainContent.classList.toggle('sidebar-active');
-        });
-        
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 992 && sidebar.classList.contains('active')) {
-                if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
-                    sidebar.classList.remove('active');
-                    mainContent.classList.remove('sidebar-active');
-                }
-            }
-        });
-        
-        // User menu dropdown (demo only)
-        document.querySelector('.user-menu').addEventListener('click', function(e) {
-            e.stopPropagation();
-            alert('User menu clicked!\n\nIn a real application, this would show profile options, settings, and logout.');
-        });
-        
-        // Notification icon (demo only)
-        document.querySelector('.nav-icon:first-child').addEventListener('click', function() {
-            alert('Notifications clicked!\n\nYou have 3 new notifications:\n• Order #ORD-78944 completed\n• New service added: Instagram Reels Views\n• System maintenance scheduled for Jan 30');
-        });
-        
-        // Simulate auto-refresh of stats (demo only)
-        setTimeout(() => {
-            document.querySelector('.stat-value').textContent = '$142.50';
-            document.querySelector('.stat-trend').innerHTML = '<span class="trend-up">↑</span> $30.00 added today';
-        }, 5000);
-    </script>
-</body>
-</html>
-
+        <!-- Recent Orders & Quick Stats -->
+        <div class="row mt-4">
+            <!-- Recent Orders -->
+            <div class="col-lg-8">
+                <div class="card dashboard-card">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-history me-2"></i>Recent Orders
+                            <a href="order-history.html" class="btn btn-sm btn-outline-primary float-end">View All</a>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="recent-orders">
+                            <table class="table table-hover" id="recentOrdersTable">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Service</th>
+                                        <th>Link</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentOrdersBody">
+                                    <!-- Orders will be loaded here -->
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4">
+                                            <div class="loader" id="ordersLoader"></div>
+                                            <p class="text-muted mt-2">Loading orders...</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Stats -->
+            <div class="col-lg-4">
+                <div class="card dashboard-card mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-chart-pie me-2"></i>Order Stats
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Completed</span>
+                                <span id="completedPercent">0%</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-success" id="completedBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Pending</span>
+                                <span id="pendingPercent">0%</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-warning" id="pendingBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Processing</span>
+                                <span id="processingPercent">0%</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-info" id="processingBar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Cancelled</span>
+                                <span id="cancelledPercent">0%</span>
+                            </div>
+                            <div class="progress" style="height: 8px;">
+                                <div class="progress-bar bg-danger" id="cancelledBar" style="width: 0%"></div>
+                            </div>
+       
