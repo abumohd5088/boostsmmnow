@@ -1,447 +1,57 @@
+<!-- Dashboard Layout -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMM Panel Admin Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="admin-styles.css">
+    <title>SMM Panel</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <style>
+        /* Custom Dashboard CSS */
+        .sidebar {background: #1e293b; color: white;}
+        .nav-link {color: #cbd5e1;}
+        .nav-link:hover {background: #334155;}
+        .card {border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);}
+    </style>
 </head>
 <body>
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="loader"></div>
-        <p>Loading SMM Panel...</p>
-    </div>
-
-    <!-- Main Container -->
-    <div class="container-fluid" id="main-container">
-        <!-- Top Navigation Bar -->
-        <nav class="navbar">
-            <div class="nav-left">
-                <button class="sidebar-toggle" id="sidebarToggle">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="logo">
-                    <img src="assets/images/logo.png" alt="SMM Panel Logo">
-                    <span class="brand-name">SMM<span class="highlight">PRO</span></span>
-                </div>
-            </div>
-            
-            <div class="nav-center">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" placeholder="Search orders, users, services...">
-                </div>
-            </div>
-            
-            <div class="nav-right">
-                <!-- Real-time Stats -->
-                <div class="live-stats">
-                    <span class="stat-item">
-                        <i class="fas fa-users online"></i>
-                        <span id="onlineUsers">0</span>
-                    </span>
-                    <span class="stat-item">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span id="pendingOrders">0</span>
-                    </span>
-                    <span class="stat-item">
-                        <i class="fas fa-dollar-sign"></i>
-                        <span id="todayRevenue">$0</span>
-                    </span>
-                </div>
-                
-                <!-- Notifications -->
-                <div class="notification-dropdown">
-                    <button class="notification-btn" id="notificationBtn">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-count" id="notificationCount">0</span>
-                    </button>
-                    <div class="notification-list" id="notificationList">
-                        <div class="notification-header">
-                            <h4>Notifications</h4>
-                            <button class="mark-all-read">Mark all as read</button>
-                        </div>
-                        <div class="notification-items">
-                            <!-- Notifications will be populated here -->
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- User Profile -->
-                <div class="profile-dropdown">
-                    <button class="profile-btn" id="profileBtn">
-                        <img src="assets/images/default-avatar.png" alt="Profile" class="profile-pic">
-                        <span class="user-name" id="userName">Admin</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="profile-menu" id="profileMenu">
-                        <a href="user-dashboard.html"><i class="fas fa-user"></i> My Profile</a>
-                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
-                        <div class="divider"></div>
-                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
-                    </div>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Main Content Area -->
-        <div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
             <!-- Sidebar -->
-            <aside class="sidebar" id="sidebar">
-                <div class="sidebar-header">
-                    <h3><i class="fas fa-chart-line"></i> Dashboard</h3>
-                </div>
-                
-                <ul class="sidebar-menu">
-                    <li class="active">
-                        <a href="index.html">
-                            <i class="fas fa-home"></i>
-                            <span>Overview</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="orders.html">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span>Orders</span>
-                            <span class="badge" id="orderBadge">0</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="services.html">
-                            <i class="fas fa-box"></i>
-                            <span>Services</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fas fa-users"></i>
-                            <span>Users</span>
-                            <span class="badge" id="userBadge">0</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="transactions.html">
-                            <i class="fas fa-money-bill-wave"></i>
-                            <span>Transactions</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="support.html">
-                            <i class="fas fa-headset"></i>
-                            <span>Support</span>
-                            <span class="badge" id="ticketBadge">0</span>
-                        </a>
-                    </li>
-                    <li class="menu-divider">Reports</li>
-                    <li>
-                        <a href="#">
-                            <i class="fas fa-chart-bar"></i>
-                            <span>Analytics</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fas fa-file-invoice-dollar"></i>
-                            <span>Revenue</span>
-                        </a>
-                    </li>
-                    <li class="menu-divider">Settings</li>
-                    <li>
-                        <a href="settings.html">
-                            <i class="fas fa-cog"></i>
-                            <span>Panel Settings</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="fas fa-shield-alt"></i>
-                            <span>API Settings</span>
-                        </a>
-                    </li>
+            <nav class="col-md-2 sidebar">
+                <h4 class="text-center py-3">SMM Panel</h4>
+                <ul class="nav flex-column">
+                    <li><a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="services.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Services</a></li>
+                    <li><a href="new-order.html" class="nav-link"><i class="fas fa-plus-circle"></i> New Order</a></li>
+                    <li><a href="order-history.html" class="nav-link"><i class="fas fa-history"></i> Order History</a></li>
+                    <li><a href="wallet.html" class="nav-link"><i class="fas fa-wallet"></i> Wallet</a></li>
                 </ul>
-                
-                <div class="sidebar-footer">
-                    <div class="server-status">
-                        <span class="status-dot online"></span>
-                        <span>Server Status: <strong>Online</strong></span>
-                    </div>
-                    <div class="api-status">
-                        <span class="status-dot online"></span>
-                        <span>API: <strong>Connected</strong></span>
-                    </div>
-                </div>
-            </aside>
-
-            <!-- Dashboard Content -->
-            <div class="dashboard-content">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1>Dashboard Overview</h1>
-                    <div class="breadcrumb">
-                        <a href="index.html">Home</a> / <span>Dashboard</span>
-                    </div>
-                </div>
-                
-                <!-- Stats Cards -->
-                <div class="stats-row">
-                    <div class="stat-card primary">
-                        <div class="stat-icon">
-                            <i class="fas fa-dollar-sign"></i>
+            </nav>
+            
+            <!-- Main Content -->
+            <main class="col-md-10">
+                <div class="container-fluid pt-4">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h5>Balance</h5>
+                                    <h3 id="userBalance">$0.00</h3>
+                                </div>
+                            </div>
                         </div>
-                        <div class="stat-info">
-                            <h3 id="totalRevenue">$0.00</h3>
-                            <p>Total Revenue</p>
-                        </div>
-                        <div class="stat-trend up">
-                            <i class="fas fa-arrow-up"></i> 12%
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card success">
-                        <div class="stat-icon">
-                            <i class="fas fa-shopping-cart"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="totalOrders">0</h3>
-                            <p>Total Orders</p>
-                        </div>
-                        <div class="stat-trend up">
-                            <i class="fas fa-arrow-up"></i> 8%
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card warning">
-                        <div class="stat-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="totalUsers">0</h3>
-                            <p>Total Users</p>
-                        </div>
-                        <div class="stat-trend up">
-                            <i class="fas fa-arrow-up"></i> 5%
-                        </div>
-                    </div>
-                    
-                    <div class="stat-card danger">
-                        <div class="stat-icon">
-                            <i class="fas fa-clock"></i>
-                        </div>
-                        <div class="stat-info">
-                            <h3 id="pendingTasks">0</h3>
-                            <p>Pending Orders</p>
-                        </div>
-                        <div class="stat-trend down">
-                            <i class="fas fa-arrow-down"></i> 3%
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Charts and Real-time Data -->
-                <div class="content-row">
-                    <!-- Orders Chart -->
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-chart-line"></i> Orders Overview</h3>
-                            <select id="chartRange">
-                                <option value="today">Today</option>
-                                <option value="week">This Week</option>
-                                <option value="month">This Month</option>
-                                <option value="year">This Year</option>
-                            </select>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="ordersChart"></canvas>
-                        </div>
-                    </div>
-                    
-                    <!-- Recent Orders -->
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-history"></i> Recent Orders</h3>
-                            <a href="orders.html" class="view-all">View All</a>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Order ID</th>
-                                            <th>Service</th>
-                                            <th>User</th>
-                                            <th>Amount</th>
-                                            <th>Status</th>
-                                            <th>Date</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="recentOrders">
-                                        <!-- Orders will be populated here -->
-                                    </tbody>
-                                </table>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h5>Orders Today</h5>
+                                    <h3 id="todayOrders">0</h3>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Real-time Activity -->
-                <div class="content-row">
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-bolt"></i> Real-time Activity</h3>
-                            <span class="live-badge">
-                                <span class="pulse"></span>
-                                LIVE
-                            </span>
-                        </div>
-                        <div class="card-body">
-                            <div class="activity-feed" id="activityFeed">
-                                <!-- Activity items will be added here -->
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Quick Actions -->
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-rocket"></i> Quick Actions</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="quick-actions">
-                                <button class="action-btn" id="addServiceBtn">
-                                    <i class="fas fa-plus-circle"></i>
-                                    <span>Add New Service</span>
-                                </button>
-                                <button class="action-btn" id="addUserBtn">
-                                    <i class="fas fa-user-plus"></i>
-                                    <span>Add New User</span>
-                                </button>
-                                <button class="action-btn" id="processOrdersBtn">
-                                    <i class="fas fa-cogs"></i>
-                                    <span>Process Orders</span>
-                                </button>
-                                <button class="action-btn" id="updatePricesBtn">
-                                    <i class="fas fa-tags"></i>
-                                    <span>Update Prices</span>
-                                </button>
-                                <button class="action-btn" id="sendNotificationBtn">
-                                    <i class="fas fa-bullhorn"></i>
-                                    <span>Send Notification</span>
-                                </button>
-                                <button class="action-btn" id="backupDataBtn">
-                                    <i class="fas fa-database"></i>
-                                    <span>Backup Data</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Service Status -->
-                <div class="content-card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-server"></i> Service Status</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="services-status" id="servicesStatus">
-                            <!-- Services status will be populated here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-content">
-                <div class="footer-left">
-                    <p>&copy; 2023 SMM Panel. All rights reserved.</p>
-                </div>
-                <div class="footer-right">
-                    <p id="currentTime">Loading time...</p>
-                    <p>Version: 2.1.0</p>
-                </div>
-            </div>
-        </footer>
-    </div>
-
-    <!-- Modals -->
-    <div class="modal" id="addServiceModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Add New Service</h3>
-                <button class="modal-close">&times;</button>
-            </div>
-            <div class="modal-body">
-                <!-- Service form will be here -->
-            </div>
+            </main>
         </div>
     </div>
-
-    <!-- Toast Notification Container -->
-    <div id="toastContainer"></div>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-    
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Main Scripts -->
-    <script src="firebase-config.js"></script>
-    <script src="script.js"></script>
-    <script src="admin-script.js"></script>
-    
-    <!-- Inline Script for this page -->
-    <script>
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize admin dashboard
-            initializeAdminDashboard();
-            
-            // Load real-time data
-            loadDashboardData();
-            
-            // Start real-time updates
-            startRealTimeUpdates();
-            
-            // Update time every second
-            setInterval(updateCurrentTime, 1000);
-            
-            // Check authentication
-            checkAdminAuth();
-        });
-        
-        // Update current time
-        function updateCurrentTime() {
-            const now = new Date();
-            document.getElementById('currentTime').textContent = 
-                now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
-        }
-        
-        // Simulate real-time activity
-        function simulateActivity() {
-            const activities = [
-                "New order #ORD-12345 placed",
-                "User John Doe registered",
-                "Order #ORD-12346 completed",
-                "Service Instagram Likes updated",
-                "Payment of $25.00 received",
-                "Support ticket #TKT-789 opened"
-            ];
-            
-            const randomActivity = activities[Math.floor(Math.random() * activities.length)];
-            addActivityToFeed(randomActivity);
-        }
-        
-        // Run activity simulation every 30 seconds
-        setInterval(simulateActivity, 30000);
-    </script>
 </body>
 </html>
