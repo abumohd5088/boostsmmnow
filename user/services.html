@@ -1,0 +1,922 @@
+>!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - SMM Panel</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+        }
+        
+        .services-container {
+            padding: 20px;
+        }
+        
+        .service-card {
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: var(--primary);
+        }
+        
+        .service-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .service-body {
+            padding: 20px;
+        }
+        
+        .service-price {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .service-meta {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+        
+        .category-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .filter-buttons {
+            margin-bottom: 30px;
+        }
+        
+        .filter-btn {
+            margin: 5px;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+        
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .search-box {
+            max-width: 400px;
+            margin: 0 auto 30px;
+        }
+        
+        .loader-container {
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .service-description {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+        
+        .order-btn {
+            width: 100%;
+            padding: 12px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .order-btn:hover {
+            transform: scale(1.02);
+        }
+        
+        .no-services {
+            text-align: center;
+            padding: 50px 20px;
+            color: #666;
+        }
+        
+        .service-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Same Sidebar as Dashboard -->
+    <div class="sidebar">
+        <div class="p-4">
+            <h4 class="text-center mb-4">
+                <i class="fas fa-rocket"></i>
+                <span class="nav-text"> SMM Panel</span>
+            </h4>
+            
+            <!-- User Info -->
+            <div class="text-center mb-4 d-none d-md-block">
+                <img src="https://ui-avatars.com/api/?name=User&background=4361ee&color=fff" 
+                     class="user-avatar mb-2" id="userAvatar">
+                <h6 id="userName">Loading...</h6>
+                <small class="text-muted" id="userEmail">user@example.com</small>
+            </div>
+            
+            <!-- Navigation Menu -->
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="fas fa-home"></i>
+                        <span class="nav-text"> Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="services.html" class="nav-link active">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="nav-text"> Services</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="new-order.html" class="nav-link">
+                        <i class="fas fa-plus-circle"></i>
+                        <span class="nav-text"> New Order</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="order-history.html" class="nav-link">
+                        <i class="fas fa-history"></i>
+                        <span class="nav-text"> Order History</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="wallet.html" class="nav-link">
+                        <i class="fas fa-wallet"></i>
+                        <span class="nav-text"> Wallet</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="tickets.html" class="nav-link">
+                        <i class="fas fa-headset"></i>
+                        <span class="nav-text"> Support Tickets</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="api.html" class="nav-link">
+                        <i class="fas fa-code"></i>
+                        <span class="nav-text"> API</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="profile.html" class="nav-link">
+                        <i class="fas fa-user"></i>
+                        <span class="nav-text"> Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-4">
+                    <a href="#" class="nav-link text-danger" id="logoutBtn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="nav-text"> Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navbar -->
+        <nav class="navbar-top">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <div>
+                        <h4 class="mb-0">Services</h4>
+                        <small class="text-muted" id="servicesCount">Loading services...</small>
+                    </div>
+                    
+                    <div class="d-flex align-items-center gap-3">
+                        <!-- Balance Display -->
+                        <div class="balance-display">
+                            <span class="text-muted me-2">Balance:</span>
+                            <span class="fw-bold text-primary" id="currentBalance">$0.00</span>
+                        </div>
+                        
+                        <!-- User Menu -->
+                        <div class="dropdown">
+                            <button class="btn btn-outline-primary dropdown-toggle d-flex align-items-center gap-2" 
+                                    type="button" data-bs-toggle="dropdown">
+                                <span id="topUserName">User</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="dashboard.html"><i class="fas fa-home me-2"></i>Dashboard</a></li>
+                                <li><a class="dropdown-item" href="wallet.html"><i class="fas fa-wallet me-2"></i>Add Funds</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#" id="mobileLogoutBtn"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Services Content -->
+        <div class="services-container">
+            <!-- Search and Filters -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="search-box">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                            <input type="text" class="form-control" id="serviceSearch" 
+                                   placeholder="Search services by name or category...">
+                            <button class="btn btn-outline-secondary" type="button" id="clearSearch">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-md-end">
+                        <button class="btn btn-primary" id="refreshServices">
+                            <i class="fas fa-sync-alt"></i> Refresh Services
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category Filters -->
+            <div class="filter-buttons text-center">
+                <button class="btn btn-outline-primary filter-btn active" data-category="all">
+                    All Services
+                </button>
+                <button class="btn btn-outline-danger filter-btn" data-category="Instagram">
+                    <i class="fab fa-instagram"></i> Instagram
+                </button>
+                <button class="btn btn-outline-danger filter-btn" data-category="YouTube">
+                    <i class="fab fa-youtube"></i> YouTube
+                </button>
+                <button class="btn btn-outline-dark filter-btn" data-category="TikTok">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </button>
+                <button class="btn btn-outline-primary filter-btn" data-category="Facebook">
+                    <i class="fab fa-facebook"></i> Facebook
+                </button>
+                <button class="btn btn-outline-info filter-btn" data-category="Twitter">
+                    <i class="fab fa-twitter"></i> Twitter
+                </button>
+                <button class="btn btn-outline-info filter-btn" data-category="Telegram">
+                    <i class="fab fa-telegram"></i> Telegram
+                </button>
+            </div>
+            
+            <!-- Services Grid -->
+            <div class="row mt-4" id="servicesGrid">
+                <!-- Services will be loaded here -->
+                <div class="col-12">
+                    <div class="loader-container">
+                        <div class="text-center">
+                            <div class="loader" style="width: 50px; height: 50px;"></div>
+                            <p class="mt-3">Loading services from API...</p>
+                            <small class="text-muted">This may take a few seconds</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- No Services Message (hidden by default) -->
+            <div class="row d-none" id="noServicesMessage">
+                <div class="col-12">
+                    <div class="no-services">
+                        <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                        <h4>No Services Found</h4>
+                        <p class="mb-4">No services match your search criteria. Try a different search or category.</p>
+                        <button class="btn btn-primary" id="resetFilters">
+                            <i class="fas fa-redo"></i> Reset Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Services Info -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5><i class="fas fa-info-circle text-primary me-2"></i>How to Order</h5>
+                            <div class="row mt-3">
+                                <div class="col-md-3 text-center mb-3">
+                                    <div class="p-3 border rounded">
+                                        <div class="text-primary mb-2">
+                                            <i class="fas fa-search fa-2x"></i>
+                                        </div>
+                                        <h6>1. Find Service</h6>
+                                        <p class="small text-muted">Browse services by category or search</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-center mb-3">
+                                    <div class="p-3 border rounded">
+                                        <div class="text-primary mb-2">
+                                            <i class="fas fa-edit fa-2x"></i>
+                                        </div>
+                                        <h6>2. Click Order</h6>
+                                        <p class="small text-muted">Click "Order Now" on any service</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-center mb-3">
+                                    <div class="p-3 border rounded">
+                                        <div class="text-primary mb-2">
+                                            <i class="fas fa-link fa-2x"></i>
+                                        </div>
+                                        <h6>3. Enter Link</h6>
+                                        <p class="small text-muted">Enter your social media link</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 text-center mb-3">
+                                    <div class="p-3 border rounded">
+                                        <div class="text-primary mb-2">
+                                            <i class="fas fa-check-circle fa-2x"></i>
+                                        </div>
+                                        <h6>4. Complete</h6>
+                                        <p class="small text-muted">Confirm order and wait for delivery</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <footer class="mt-5 pt-4 border-top">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="text-muted">
+                            &copy; 2023 SMM Panel. All rights reserved.
+                            <br><small>Services powered by <strong>easysmmpanel.com</strong></small>
+                        </p>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <p class="text-muted">
+                            <small>
+                                API Services: <span class="badge bg-success" id="apiServicesCount">0</span>
+                                | Last Updated: <span id="lastUpdated">Just now</span>
+                            </small>
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Service Details Modal -->
+    <div class="modal fade" id="serviceModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="serviceModalTitle">Service Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h4 id="modalServiceName">Service Name</h4>
+                            <p class="text-muted" id="modalServiceDescription">No description available.</p>
+                            
+                            <div class="row mt-4">
+                                <div class="col-md-6">
+                                    <div class="service-meta">
+                                        <small class="text-muted d-block">Price per 1000</small>
+                                        <h5 class="text-primary" id="modalServicePrice">$0.00</h5>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="service-meta">
+                                        <small class="text-muted d-block">Order Limits</small>
+                                        <h6 id="modalServiceLimits">Min: 0 - Max: 0</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h6>Service Details</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i> <strong>Category:</strong> <span id="modalServiceCategory">N/A</span></li>
+                                    <li><i class="fas fa-check text-success me-2"></i> <strong>Type:</strong> <span id="modalServiceType">N/A</span></li>
+                                    <li><i class="fas fa-check text-success me-2"></i> <strong>Average Time:</strong> <span id="modalServiceTime">N/A</span></li>
+                                    <li><i class="fas fa-check text-success me-2"></i> <strong>Service ID:</strong> <span id="modalServiceId">N/A</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body text-center">
+                                    <div id="modalServiceIcon" class="service-icon"></div>
+                                    <h5>Quick Order</h5>
+                                    <p class="small text-muted">Place order for this service</p>
+                                    
+                                    <div class="mt-4">
+                                        <a href="new-order.html" class="btn btn-primary btn-lg order-btn" id="modalOrderBtn">
+                                            <i class="fas fa-shopping-cart"></i> Order Now
+                                        </a>
+                                    </div>
+                                    
+                                    <div class="mt-3">
+                                        <small class="text-muted">Need help? <a href="tickets.html">Contact Support</a></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="new-order.html" class="btn btn-primary" id="modalOrderBtn2">
+                        <i class="fas fa-shopping-cart"></i> Proceed to Order
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/firebase-config.js"></script>
+    <script src="../js/api.js"></script>
+    
+    <script>
+        // Firebase Auth & Firestore
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        // DOM Elements
+        const logoutBtn = document.getElementById('logoutBtn');
+        const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+        const userName = document.getElementById('userName');
+        const userEmail = document.getElementById('userEmail');
+        const userAvatar = document.getElementById('userAvatar');
+        const topUserName = document.getElementById('topUserName');
+        const currentBalance = document.getElementById('currentBalance');
+        const servicesCount = document.getElementById('servicesCount');
+        const apiServicesCount = document.getElementById('apiServicesCount');
+        const lastUpdated = document.getElementById('lastUpdated');
+        
+        // Services Elements
+        const servicesGrid = document.getElementById('servicesGrid');
+        const serviceSearch = document.getElementById('serviceSearch');
+        const clearSearch = document.getElementById('clearSearch');
+        const refreshServices = document.getElementById('refreshServices');
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const resetFilters = document.getElementById('resetFilters');
+        const noServicesMessage = document.getElementById('noServicesMessage');
+        
+        // Modal Elements
+        const serviceModal = new bootstrap.Modal(document.getElementById('serviceModal'));
+        const modalServiceName = document.getElementById('modalServiceName');
+        const modalServiceDescription = document.getElementById('modalServiceDescription');
+        const modalServicePrice = document.getElementById('modalServicePrice');
+        const modalServiceLimits = document.getElementById('modalServiceLimits');
+        const modalServiceCategory = document.getElementById('modalServiceCategory');
+        const modalServiceType = document.getElementById('modalServiceType');
+        const modalServiceTime = document.getElementById('modalServiceTime');
+        const modalServiceId = document.getElementById('modalServiceId');
+        const modalServiceIcon = document.getElementById('modalServiceIcon');
+        const modalOrderBtn = document.getElementById('modalOrderBtn');
+        const modalOrderBtn2 = document.getElementById('modalOrderBtn2');
+        
+        // Global variables
+        let allServices = [];
+        let filteredServices = [];
+        let currentCategory = 'all';
+        let currentSearch = '';
+        let userBalance = 0;
+        
+        // Check authentication
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = '../auth/login.html';
+                return;
+            }
+            
+            // User is logged in
+            try {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    
+                    // Update user info
+                    userName.textContent = userData.name || 'User';
+                    userEmail.textContent = user.email;
+                    topUserName.textContent = userData.name || 'User';
+                    userBalance = userData.balance || 0;
+                    currentBalance.textContent = `$${userBalance.toFixed(2)}`;
+                    
+                    // Update avatar
+                    if (userData.photoURL) {
+                        userAvatar.src = userData.photoURL;
+                    } else {
+                        userAvatar.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(userData.name || 'User')}&background=4361ee&color=fff`;
+                    }
+                    
+                    // Load services
+                    await loadServices();
+                    
+                } else {
+                    console.error('User document not found');
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                showToast('Error loading services', 'danger');
+            }
+        });
+        
+        // Load services from API
+        async function loadServices() {
+            try {
+                servicesGrid.innerHTML = `
+                    <div class="col-12">
+                        <div class="loader-container">
+                            <div class="text-center">
+                                <div class="loader" style="width: 50px; height: 50px;"></div>
+                                <p class="mt-3">Loading services from API...</p>
+                            </div>
+                        </div>
+                    </div>`;
+                
+                // Get services from SMM API
+                const services = await smmAPI.getServices();
+                
+                if (services && Array.isArray(services) && services.length > 0) {
+                    allServices = services;
+                    filteredServices = [...services];
+                    
+                    // Update counts
+                    servicesCount.textContent = `${services.length} Services Available`;
+                    apiServicesCount.textContent = services.length;
+                    lastUpdated.textContent = new Date().toLocaleTimeString();
+                    
+                    // Display services
+                    displayServices();
+                } else {
+                    showNoServices();
+                    servicesCount.textContent = 'No services available';
+                }
+                
+            } catch (error) {
+                console.error('Error loading services:', error);
+                showNoServices();
+                servicesCount.textContent = 'Error loading services';
+                showToast('Failed to load services from API', 'danger');
+            }
+        }
+        
+        // Display services in grid
+        function displayServices() {
+            servicesGrid.innerHTML = '';
+            noServicesMessage.classList.add('d-none');
+            
+            if (filteredServices.length === 0) {
+                showNoServices();
+                return;
+            }
+            
+            filteredServices.forEach(service => {
+                const serviceCard = createServiceCard(service);
+                servicesGrid.appendChild(serviceCard);
+            });
+        }
+        
+        // Create service card element
+        function createServiceCard(service) {
+            const col = document.createElement('div');
+            col.className = 'col-xl-4 col-lg-6 col-md-6 mb-4';
+            
+            // Get service icon
+            const icon = getServiceIcon(service.category);
+            
+            // Calculate price
+            const price = (service.rate / 100).toFixed(2);
+            const min = service.min || 0;
+            const max = service.max || 0;
+            
+            // Create card HTML
+            col.innerHTML = `
+                <div class="card service-card h-100">
+                    <div class="position-relative">
+                        <span class="category-badge" style="background: ${getCategoryColor(service.category)}">
+                            ${service.category}
+                        </span>
+                    </div>
+                    <div class="service-header">
+                        ${icon}
+                        <h5 class="mb-0">${service.category}</h5>
+                    </div>
+                    <div class="service-body">
+                        <h6 class="fw-bold mb-2" title="${service.name}">
+                            ${service.name.length > 50 ? service.name.substring(0, 50) + '...' : service.name}
+                        </h6>
+                        
+                        <div class="service-meta">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small class="text-muted d-block">Price per 1000</small>
+                                    <h4 class="service-price mb-0">$${price}</h4>
+                                </div>
+                                <div class="text-end">
+                                    <small class="text-muted d-block">Order Range</small>
+                                    <h6 class="mb-0">${min} - ${max}</h6>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        ${service.description ? `
+                            <p class="service-description">
+                                ${service.description.length > 100 ? service.description.substring(0, 100) + '...' : service.description}
+                            </p>
+                        ` : ''}
+                        
+                        <div class="service-stats">
+                            <span title="Service Type">
+                                <i class="fas fa-tag"></i> ${service.type || 'N/A'}
+                            </span>
+                            <span title="Service ID">
+                                <i class="fas fa-hashtag"></i> ${service.service}
+                            </span>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <button class="btn btn-outline-primary w-100 mb-2 view-details-btn" 
+                                    data-service-id="${service.service}">
+                                <i class="fas fa-info-circle"></i> View Details
+                            </button>
+                            <a href="new-order.html?service=${service.service}" 
+                               class="btn btn-primary order-btn">
+                                <i class="fas fa-shopping-cart"></i> Order Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add click event for view details
+            const viewDetailsBtn = col.querySelector('.view-details-btn');
+            viewDetailsBtn.addEventListener('click', () => showServiceDetails(service));
+            
+            return col;
+        }
+        
+        // Show service details modal
+        function showServiceDetails(service) {
+            // Update modal content
+            modalServiceName.textContent = service.name;
+            modalServiceDescription.textContent = service.description || 'No description available.';
+            modalServicePrice.textContent = `$${(service.rate / 100).toFixed(2)}`;
+            modalServiceLimits.textContent = `Min: ${service.min} - Max: ${service.max}`;
+            modalServiceCategory.textContent = service.category || 'N/A';
+            modalServiceType.textContent = service.type || 'N/A';
+            modalServiceTime.textContent = 'Varies (usually 24-48 hours)';
+            modalServiceId.textContent = service.service;
+            
+            // Set service icon
+            modalServiceIcon.innerHTML = getServiceIcon(service.category);
+            
+            // Update order links with service ID
+            modalOrderBtn.href = `new-order.html?service=${service.service}`;
+            modalOrderBtn2.href = `new-order.html?service=${service.service}`;
+            
+            // Show modal
+            serviceModal.show();
+        }
+        
+        // Get service icon based on category
+        function getServiceIcon(category) {
+            const icons = {
+                'Instagram': '<i class="fab fa-instagram fa-2x"></i>',
+                'YouTube': '<i class="fab fa-youtube fa-2x"></i>',
+                'TikTok': '<i class="fab fa-tiktok fa-2x"></i>',
+                'Facebook': '<i class="fab fa-facebook fa-2x"></i>',
+                'Twitter': '<i class="fab fa-twitter fa-2x"></i>',
+                'Telegram': '<i class="fab fa-telegram fa-2x"></i>',
+                'Spotify': '<i class="fab fa-spotify fa-2x"></i>',
+                'LinkedIn': '<i class="fab fa-linkedin fa-2x"></i>',
+                'Pinterest': '<i class="fab fa-pinterest fa-2x"></i>',
+                'Snapchat': '<i class="fab fa-snapchat fa-2x"></i>',
+                'WhatsApp': '<i class="fab fa-whatsapp fa-2x"></i>'
+            };
+            
+            return icons[category] || '<i class="fas fa-globe fa-2x"></i>';
+        }
+        
+        // Get category color
+        function getCategoryColor(category) {
+            const colors = {
+                'Instagram': '#E4405F',
+                'YouTube': '#FF0000',
+                'TikTok': '#000000',
+                'Facebook': '#1877F2',
+                'Twitter': '#1DA1F2',
+                'Telegram': '#26A5E4',
+                'Spotify': '#1DB954',
+                'LinkedIn': '#0A66C2',
+                'Pinterest': '#E60023',
+                'Snapchat': '#FFFC00',
+                'WhatsApp': '#25D366'
+            };
+            
+            return colors[category] || '#4361ee';
+        }
+        
+        // Filter services by category
+        function filterByCategory(category) {
+            currentCategory = category;
+            
+            if (category === 'all') {
+                filteredServices = [...allServices];
+            } else {
+                filteredServices = allServices.filter(service => 
+                    service.category === category
+                );
+            }
+            
+            // Apply search filter if any
+            if (currentSearch) {
+                filteredServices = filteredServices.filter(service =>
+                    service.name.toLowerCase().includes(currentSearch) ||
+                    service.category.toLowerCase().includes(currentSearch) ||
+                    (service.description && service.description.toLowerCase().includes(currentSearch))
+                );
+            }
+            
+            displayServices();
+            updateFilterButtons();
+        }
+        
+        // Search services
+        function searchServices(searchTerm) {
+            currentSearch = searchTerm.toLowerCase();
+            
+            if (currentCategory === 'all') {
+                filteredServices = allServices;
+            } else {
+                filteredServices = allServices.filter(service => 
+                    service.category === currentCategory
+                );
+            }
+            
+            if (currentSearch) {
+                filteredServices = filteredServices.filter(service =>
+                    service.name.toLowerCase().includes(currentSearch) ||
+                    service.category.toLowerCase().includes(currentSearch) ||
+                    (service.description && service.description.toLowerCase().includes(currentSearch))
+                );
+            }
+            
+            displayServices();
+        }
+        
+        // Update active filter button
+        function updateFilterButtons() {
+            filterButtons.forEach(btn => {
+                const category = btn.getAttribute('data-category');
+                if (category === currentCategory) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+        
+        // Show no services message
+        function showNoServices() {
+            servicesGrid.innerHTML = '';
+            noServicesMessage.classList.remove('d-none');
+        }
+        
+        // Show toast message
+        function showToast(message, type = 'info') {
+            const toastId = 'toast-' + Date.now();
+            const toastHtml = `
+                <div id="${toastId}" class="toast align-items-center text-bg-${type} border-0 position-fixed bottom-0 end-0 m-3" role="alert">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                    </div>
+                </div>`;
+            
+            document.body.insertAdjacentHTML('beforeend', toastHtml);
+            
+            const toastElement = document.getElementById(toastId);
+            const toast = new bootstrap.Toast(toastElement, { delay: 3000 });
+            toast.show();
+            
+            toastElement.addEventListener('hidden.bs.toast', function () {
+                this.remove();
+            });
+        }
+        
+        // Logout function
+        async function logout() {
+            try {
+                await auth.signOut();
+                window.location.href = '../auth/login.html';
+            } catch (error) {
+                console.error('Logout error:', error);
+                showToast('Logout failed. Please try again.', 'danger');
+            }
+        }
+        
+        // Event Listeners
+        logoutBtn.addEventListener('click', logout);
+        mobileLogoutBtn.addEventListener('click', logout);
+        
+        // Filter button events
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.getAttribute('data-category');
+                filterByCategory(category);
+            });
+        });
+        
+        // Search events
+        serviceSearch.addEventListener('input', (e) => {
+            searchServices(e.target.value);
+        });
+        
+        clearSearch.addEventListener('click', () => {
+            serviceSearch.value = '';
+            searchServices('');
+        });
+        
+        refreshServices.addEventListener('click', () => {
+            loadServices();
+            showToast('Refreshing services...', 'info');
+        });
+        
+        resetFilters.addEventListener('click', () => {
+            currentCategory = 'all';
+            currentSearch = '';
+            serviceSearch.value = '';
+            filteredServices = [...allServices];
+            displayServices();
+            updateFilterButtons();
+        });
+        
+        // Check API connection
+        async function checkAPIConnection() {
+            try {
+                const balance = await smmAPI.getBalance();
+                if (balance && balance.balance !== undefined) {
+                    console.log('API connection successful');
+                }
+            } catch (error) {
+                console.error('API connection failed:', error);
+            }
+        }
+        
+        // Initial API check
+        setTimeout(checkAPIConnection, 1000);
+    </script>
+</body>
+</html>
