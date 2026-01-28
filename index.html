@@ -3,773 +3,445 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexusPanel - Professional SMM Services</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
-            --success: #4cc9f0;
-            --dark: #1e293b;
-            --darker: #0f172a;
-            --light: #f8fafc;
-            --gray: #64748b;
-            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --transition: all 0.3s ease;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--dark);
-            background-color: #f1f5f9;
-            line-height: 1.6;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header & Navigation */
-        header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-        
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 16px 0;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            font-family: 'Poppins', sans-serif;
-            font-weight: 700;
-            font-size: 28px;
-            color: var(--primary);
-            text-decoration: none;
-        }
-        
-        .logo-icon {
-            margin-right: 8px;
-            font-size: 32px;
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 32px;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            font-size: 16px;
-            transition: var(--transition);
-            position: relative;
-            padding: 4px 0;
-        }
-        
-        .nav-links a:hover, 
-        .nav-links a.active {
-            color: var(--primary);
-        }
-        
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary);
-            transition: var(--transition);
-        }
-        
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 100%;
-        }
-        
-        .auth-buttons {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 10px 24px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: none;
-            text-align: center;
-            border: none;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background-color: var(--secondary);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.3);
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--primary);
-            color: var(--primary);
-        }
-        
-        .btn-outline:hover {
-            background-color: var(--primary);
-            color: white;
-            transform: translateY(-2px);
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: var(--dark);
-            cursor: pointer;
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1) 0%, rgba(76, 201, 240, 0.1) 100%);
-            padding: 80px 0;
-            text-align: center;
-        }
-        
-        .hero h1 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 48px;
-            font-weight: 800;
-            margin-bottom: 24px;
-            background: linear-gradient(to right, var(--primary), var(--success));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            line-height: 1.2;
-        }
-        
-        .hero p {
-            font-size: 20px;
-            color: var(--gray);
-            max-width: 700px;
-            margin: 0 auto 40px;
-        }
-        
-        .hero-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 30px;
-        }
-        
-        .stats-container {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin-top: 50px;
-            flex-wrap: wrap;
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-number {
-            font-family: 'Poppins', sans-serif;
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-        
-        .stat-label {
-            font-size: 16px;
-            color: var(--gray);
-        }
-        
-        /* Features Section */
-        .features {
-            padding: 100px 0;
-            background-color: white;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-title h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 36px;
-            font-weight: 700;
-            color: var(--darker);
-            margin-bottom: 16px;
-        }
-        
-        .section-title p {
-            color: var(--gray);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .feature-card {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: var(--card-shadow);
-            transition: var(--transition);
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-        
-        .feature-icon {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: var(--primary);
-        }
-        
-        .feature-card h3 {
-            font-size: 24px;
-            margin-bottom: 16px;
-            color: var(--darker);
-        }
-        
-        .feature-card p {
-            color: var(--gray);
-        }
-        
-        /* Services Preview */
-        .services-preview {
-            padding: 100px 0;
-            background-color: #f1f5f9;
-        }
-        
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
-        }
-        
-        .service-item {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: var(--card-shadow);
-            transition: var(--transition);
-        }
-        
-        .service-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .service-icon {
-            font-size: 32px;
-            margin-bottom: 15px;
-            color: var(--primary);
-        }
-        
-        .service-item h4 {
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        
-        .service-price {
-            font-weight: 700;
-            color: var(--primary);
-            font-size: 18px;
-        }
-        
-        /* CTA Section */
-        .cta {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            padding: 80px 0;
-            text-align: center;
-            color: white;
-        }
-        
-        .cta h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-        
-        .cta p {
-            font-size: 20px;
-            max-width: 700px;
-            margin: 0 auto 40px;
-            opacity: 0.9;
-        }
-        
-        .btn-light {
-            background-color: white;
-            color: var(--primary);
-            font-weight: 700;
-            padding: 14px 40px;
-            font-size: 18px;
-        }
-        
-        .btn-light:hover {
-            background-color: var(--light);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--darker);
-            color: white;
-            padding: 70px 0 30px;
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 50px;
-        }
-        
-        .footer-col h3 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 20px;
-            margin-bottom: 25px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .footer-col h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background-color: var(--primary);
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-links a {
-            color: #cbd5e1;
-            text-decoration: none;
-            transition: var(--transition);
-            display: block;
-        }
-        
-        .footer-links a:hover {
-            color: white;
-            transform: translateX(5px);
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #94a3b8;
-            font-size: 15px;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero h1 {
-                font-size: 40px;
-            }
-            
-            .stat-number {
-                font-size: 32px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .nav-links {
-                position: fixed;
-                top: 80px;
-                right: -100%;
-                flex-direction: column;
-                background: white;
-                width: 80%;
-                height: calc(100vh - 80px);
-                padding: 30px;
-                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-                transition: var(--transition);
-                z-index: 999;
-            }
-            
-            .nav-links.active {
-                right: 0;
-            }
-            
-            .nav-links li {
-                margin: 15px 0;
-            }
-            
-            .auth-buttons {
-                display: none;
-            }
-            
-            .hero h1 {
-                font-size: 36px;
-            }
-            
-            .hero p {
-                font-size: 18px;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .btn {
-                width: 100%;
-                max-width: 300px;
-            }
-            
-            .stats-container {
-                gap: 20px;
-            }
-            
-            .stat-number {
-                font-size: 28px;
-            }
-            
-            .section-title h2 {
-                font-size: 30px;
-            }
-            
-            .cta h2 {
-                font-size: 32px;
-            }
-            
-            .cta p {
-                font-size: 18px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .navbar {
-                padding: 12px 0;
-            }
-            
-            .logo {
-                font-size: 24px;
-            }
-            
-            .logo-icon {
-                font-size: 28px;
-            }
-            
-            .hero {
-                padding: 60px 0;
-            }
-            
-            .hero h1 {
-                font-size: 32px;
-            }
-            
-            .section-title h2 {
-                font-size: 26px;
-            }
-            
-            .features, .services-preview, .cta {
-                padding: 60px 0;
-            }
-        }
-    </style>
+    <title>SMM Panel Admin Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
 </head>
 <body>
-    <!-- Header & Navigation -->
-    <header>
-        <div class="container">
-            <nav class="navbar">
-                <a href="index.html" class="logo">
-                    <span class="logo-icon">🚀</span>
-                    NexusPanel
-                </a>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loader"></div>
+        <p>Loading SMM Panel...</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container-fluid" id="main-container">
+        <!-- Top Navigation Bar -->
+        <nav class="navbar">
+            <div class="nav-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">
+                    <img src="assets/images/logo.png" alt="SMM Panel Logo">
+                    <span class="brand-name">SMM<span class="highlight">PRO</span></span>
+                </div>
+            </div>
+            
+            <div class="nav-center">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search orders, users, services...">
+                </div>
+            </div>
+            
+            <div class="nav-right">
+                <!-- Real-time Stats -->
+                <div class="live-stats">
+                    <span class="stat-item">
+                        <i class="fas fa-users online"></i>
+                        <span id="onlineUsers">0</span>
+                    </span>
+                    <span class="stat-item">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span id="pendingOrders">0</span>
+                    </span>
+                    <span class="stat-item">
+                        <i class="fas fa-dollar-sign"></i>
+                        <span id="todayRevenue">$0</span>
+                    </span>
+                </div>
                 
-                <button class="mobile-menu-btn" id="mobile-menu-btn">☰</button>
+                <!-- Notifications -->
+                <div class="notification-dropdown">
+                    <button class="notification-btn" id="notificationBtn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count" id="notificationCount">0</span>
+                    </button>
+                    <div class="notification-list" id="notificationList">
+                        <div class="notification-header">
+                            <h4>Notifications</h4>
+                            <button class="mark-all-read">Mark all as read</button>
+                        </div>
+                        <div class="notification-items">
+                            <!-- Notifications will be populated here -->
+                        </div>
+                    </div>
+                </div>
                 
-                <ul class="nav-links" id="nav-links">
-                    <li><a href="index.html" class="active">Home</a></li>
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="public/auth/login.html">Login</a></li>
+                <!-- User Profile -->
+                <div class="profile-dropdown">
+                    <button class="profile-btn" id="profileBtn">
+                        <img src="assets/images/default-avatar.png" alt="Profile" class="profile-pic">
+                        <span class="user-name" id="userName">Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="profile-menu" id="profileMenu">
+                        <a href="user-dashboard.html"><i class="fas fa-user"></i> My Profile</a>
+                        <a href="settings.html"><i class="fas fa-cog"></i> Settings</a>
+                        <div class="divider"></div>
+                        <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <h3><i class="fas fa-chart-line"></i> Dashboard</h3>
+                </div>
+                
+                <ul class="sidebar-menu">
+                    <li class="active">
+                        <a href="index.html">
+                            <i class="fas fa-home"></i>
+                            <span>Overview</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="orders.html">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Orders</span>
+                            <span class="badge" id="orderBadge">0</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="services.html">
+                            <i class="fas fa-box"></i>
+                            <span>Services</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-users"></i>
+                            <span>Users</span>
+                            <span class="badge" id="userBadge">0</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="transactions.html">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Transactions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="support.html">
+                            <i class="fas fa-headset"></i>
+                            <span>Support</span>
+                            <span class="badge" id="ticketBadge">0</span>
+                        </a>
+                    </li>
+                    <li class="menu-divider">Reports</li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                            <span>Revenue</span>
+                        </a>
+                    </li>
+                    <li class="menu-divider">Settings</li>
+                    <li>
+                        <a href="settings.html">
+                            <i class="fas fa-cog"></i>
+                            <span>Panel Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>API Settings</span>
+                        </a>
+                    </li>
                 </ul>
                 
-                <div class="auth-buttons">
-                    <a href="public/auth/login.html" class="btn btn-outline">Login</a>
-                    <a href="public/auth/signup.html" class="btn btn-primary">Sign Up</a>
+                <div class="sidebar-footer">
+                    <div class="server-status">
+                        <span class="status-dot online"></span>
+                        <span>Server Status: <strong>Online</strong></span>
+                    </div>
+                    <div class="api-status">
+                        <span class="status-dot online"></span>
+                        <span>API: <strong>Connected</strong></span>
+                    </div>
                 </div>
-            </nav>
-        </div>
-    </header>
+            </aside>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1>Grow Your Social Media Presence Instantly</h1>
-            <p>Professional SMM panel with instant delivery, best prices, and 24/7 support. Boost your followers, likes, views, and engagement on all major platforms.</p>
-            <div class="hero-buttons">
-                <a href="public/auth/signup.html" class="btn btn-primary">Get Started Free</a>
-                <a href="#services" class="btn btn-outline">View Services</a>
-            </div>
-            
-            <div class="stats-container">
-                <div class="stat-item">
-                    <div class="stat-number">10M+</div>
-                    <div class="stat-label">Orders Completed</div>
+            <!-- Dashboard Content -->
+            <div class="dashboard-content">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>Dashboard Overview</h1>
+                    <div class="breadcrumb">
+                        <a href="index.html">Home</a> / <span>Dashboard</span>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">500K+</div>
-                    <div class="stat-label">Active Users</div>
+                
+                <!-- Stats Cards -->
+                <div class="stats-row">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalRevenue">$0.00</h3>
+                            <p>Total Revenue</p>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> 12%
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalOrders">0</h3>
+                            <p>Total Orders</p>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> 8%
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalUsers">0</h3>
+                            <p>Total Users</p>
+                        </div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> 5%
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card danger">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="pendingTasks">0</h3>
+                            <p>Pending Orders</p>
+                        </div>
+                        <div class="stat-trend down">
+                            <i class="fas fa-arrow-down"></i> 3%
+                        </div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">24/7</div>
-                    <div class="stat-label">Support</div>
+                
+                <!-- Charts and Real-time Data -->
+                <div class="content-row">
+                    <!-- Orders Chart -->
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-line"></i> Orders Overview</h3>
+                            <select id="chartRange">
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="year">This Year</option>
+                            </select>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="ordersChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Recent Orders -->
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-history"></i> Recent Orders</h3>
+                            <a href="orders.html" class="view-all">View All</a>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Order ID</th>
+                                            <th>Service</th>
+                                            <th>User</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentOrders">
+                                        <!-- Orders will be populated here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Real-time Activity -->
+                <div class="content-row">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-bolt"></i> Real-time Activity</h3>
+                            <span class="live-badge">
+                                <span class="pulse"></span>
+                                LIVE
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <div class="activity-feed" id="activityFeed">
+                                <!-- Activity items will be added here -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Actions -->
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-rocket"></i> Quick Actions</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="quick-actions">
+                                <button class="action-btn" id="addServiceBtn">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <span>Add New Service</span>
+                                </button>
+                                <button class="action-btn" id="addUserBtn">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>Add New User</span>
+                                </button>
+                                <button class="action-btn" id="processOrdersBtn">
+                                    <i class="fas fa-cogs"></i>
+                                    <span>Process Orders</span>
+                                </button>
+                                <button class="action-btn" id="updatePricesBtn">
+                                    <i class="fas fa-tags"></i>
+                                    <span>Update Prices</span>
+                                </button>
+                                <button class="action-btn" id="sendNotificationBtn">
+                                    <i class="fas fa-bullhorn"></i>
+                                    <span>Send Notification</span>
+                                </button>
+                                <button class="action-btn" id="backupDataBtn">
+                                    <i class="fas fa-database"></i>
+                                    <span>Backup Data</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Service Status -->
+                <div class="content-card">
+                    <div class="card-header">
+                        <h3><i class="fas fa-server"></i> Service Status</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="services-status" id="servicesStatus">
+                            <!-- Services status will be populated here -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-title">
-                <h2>Powerful Features</h2>
-                <p>Everything you need to manage and grow your social media presence in one place</p>
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <p>&copy; 2023 SMM Panel. All rights reserved.</p>
+                </div>
+                <div class="footer-right">
+                    <p id="currentTime">Loading time...</p>
+                    <p>Version: 2.1.0</p>
+                </div>
             </div>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Instant Delivery</h3>
-                    <p>Most services start within minutes of placing your order. No more waiting hours for results.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📱</div>
-                    <h3>Multi-Platform</h3>
-                    <p>Services for Instagram, Facebook, TikTok, Twitter, YouTube, Telegram, and more platforms.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">💰</div>
-                    <h3>Best Prices</h3>
-                    <p>Competitive pricing with volume discounts. Get the best value for your social media growth.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>Analytics Dashboard</h3>
-                    <p>Track all your orders, monitor performance, and analyze your growth with detailed statistics.</p>
-                </div>
+        </footer>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal" id="addServiceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Service</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Service form will be here -->
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Services Preview -->
-    <section class="services-preview" id="services">
-        <div class="container">
-            <div class="section-title">
-                <h2>Popular Services</h2>
-                <p>High-quality social media services with guaranteed results and refill protection</p>
-            </div>
-            
-            <div class="services-grid">
-                <div class="service-item">
-                    <div class="service-icon">❤️</div>
-                    <h4>Instagram Likes</h4>
-                    <div class="service-price">from $0.50</div>
-                </div>
-                
-                <div class="service-item">
-                    <div class="service-icon">👥</div>
-                    <h4>Instagram Followers</h4>
-                    <div class="service-price">from $1.20</div>
-                </div>
-                
-                <div class="service-item">
-                    <div class="service-icon">▶️</div>
-                    <h4>YouTube Views</h4>
-                    <div class="service-price">from $0.80</div>
-                </div>
-                
-                <div class="service-item">
-                    <div class="service-icon">💬</div>
-                    <h4>Telegram Members</h4>
-                    <div class="service-price">from $2.50</div>
-                </div>
-                
-                <div class="service-item">
-                    <div class="service-icon">🔥</div>
-                    <h4>TikTok Views</h4>
-                    <div class="service-price">from $0.30</div>
-                </div>
-                
-                <div class="service-item">
-                    <div class="service-icon">🐦</div>
-                    <h4>Twitter Followers</h4>
-                    <div class="service-price">from $1.00</div>
-                </div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 40px;">
-                <a href="public/user/services.html" class="btn btn-primary">View All Services</a>
-            </div>
-        </div>
-    </section>
+    <!-- Toast Notification Container -->
+    <div id="toastContainer"></div>
 
-    <!-- CTA Section -->
-    <section class="cta">
-        <div class="container">
-            <h2>Ready to Grow Your Social Media?</h2>
-            <p>Join thousands of satisfied customers who have transformed their social media presence with our reliable and affordable services.</p>
-            <a href="public/auth/signup.html" class="btn btn-light">Create Free Account</a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h3>NexusPanel</h3>
-                    <p style="color: #cbd5e1; margin-top: 20px; line-height: 1.7;">
-                        Professional SMM panel providing high-quality social media services since 2020. Trusted by agencies and influencers worldwide.
-                    </p>
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="public/user/pricing.html">Pricing</a></li>
-                        <li><a href="public/user/api.html">API Documentation</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Support</h3>
-                    <ul class="footer-links">
-                        <li><a href="public/user/tickets.html">Submit Ticket</a></li>
-                        <li><a href="public/user/knowledge-base.html">Knowledge Base</a></li>
-                        <li><a href="public/user/faq.html">FAQ</a></li>
-                        <li><a href="mailto:support@nexuspanel.com">support@nexuspanel.com</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Legal</h3>
-                    <ul class="footer-links">
-                        <li><a href="public/legal/terms.html">Terms of Service</a></li>
-                        <li><a href="public/legal/privacy.html">Privacy Policy</a></li>
-                        <li><a href="public/legal/refund.html">Refund Policy</a></li>
-                        <li><a href="public/legal/cookies.html">Cookie Policy</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2026 NexusPanel. All rights reserved. | Professional SMM Panel Services</p>
-            </div>
-        </div>
-    </footer>
-
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Main Scripts -->
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script src="admin-script.js"></script>
+    
+    <!-- Inline Script for this page -->
     <script>
-        // Mobile Menu Toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const navLinks = document.getElementById('nav-links');
-        
-        mobileMenuBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-            mobileMenuBtn.innerHTML = navLinks.classList.contains('active') ? '✕' : '☰';
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize admin dashboard
+            initializeAdminDashboard();
+            
+            // Load real-time data
+            loadDashboardData();
+            
+            // Start real-time updates
+            startRealTimeUpdates();
+            
+            // Update time every second
+            setInterval(updateCurrentTime, 1000);
+            
+            // Check authentication
+            checkAdminAuth();
         });
         
-        // Close mobile menu when clicking a link
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                mobileMenuBtn.innerHTML = '☰';
-            });
-        });
+        // Update current time
+        function updateCurrentTime() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+        }
         
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                if(this.getAttribute('href') !== '#') {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    if(targetId !== '#') {
-                        const targetElement = document.querySelector(targetId);
-                        if(targetElement) {
-                            window.scrollTo({
-                                top: targetElement.offsetTop - 80,
-                                behavior: 'smooth'
-                            });
-                        }
-                    }
-                }
-            });
-        });
+        // Simulate real-time activity
+        function simulateActivity() {
+            const activities = [
+                "New order #ORD-12345 placed",
+                "User John Doe registered",
+                "Order #ORD-12346 completed",
+                "Service Instagram Likes updated",
+                "Payment of $25.00 received",
+                "Support ticket #TKT-789 opened"
+            ];
+            
+            const randomActivity = activities[Math.floor(Math.random() * activities.length)];
+            addActivityToFeed(randomActivity);
+        }
+        
+        // Run activity simulation every 30 seconds
+        setInterval(simulateActivity, 30000);
     </script>
 </body>
 </html>
-
-
-    
