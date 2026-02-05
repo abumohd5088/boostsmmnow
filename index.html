@@ -3,31 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMM Panel - Best Social Media Marketing Services</title>
-    
+    <title>BoostSMM Now - Fast & Reliable SMM Panel</title>
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/utilities.css">
 </head>
 <body>
+    <div class="announcement-bar">
+        <div class="container">
+            <p><i class="fas fa-bolt"></i> Instant start on most services • 24/7 support • Secure payments</p>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
             <div class="nav-brand">
                 <i class="fas fa-rocket"></i>
-                <span>SMMPanel</span>
+                <span>BoostSMM Now</span>
             </div>
             <div class="nav-menu">
                 <a href="#features">Features</a>
                 <a href="#services">Services</a>
                 <a href="#pricing">Pricing</a>
+                <a href="#faq">FAQ</a>
                 <a href="auth/login.html" class="btn btn-outline">Login</a>
                 <a href="auth/signup.html" class="btn btn-primary">Sign Up</a>
             </div>
-            <button class="nav-toggle">
+            <button class="nav-toggle" aria-label="Toggle navigation">
                 <i class="fas fa-bars"></i>
             </button>
         </div>
@@ -35,31 +42,102 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="container">
+        <div class="container hero-grid">
             <div class="hero-content">
-                <h1 class="hero-title">Boost Your Social Media Presence</h1>
-                <p class="hero-subtitle">High-quality Instagram followers, YouTube views, Facebook likes, and 50+ more services at the best prices.</p>
+                <span class="eyebrow">All-in-one SMM Panel</span>
+                <h1 class="hero-title">Scale social growth with fast, reliable delivery.</h1>
+                <p class="hero-subtitle">Launch Instagram, TikTok, YouTube, and Facebook campaigns in minutes. Transparent pricing, real-time tracking, and curated providers for consistent results.</p>
                 <div class="hero-buttons">
                     <a href="auth/signup.html" class="btn btn-primary btn-lg">
-                        <i class="fas fa-rocket"></i> Get Started Free
+                        <i class="fas fa-rocket"></i> Start Free Trial
                     </a>
                     <a href="#services" class="btn btn-outline btn-lg">
-                        <i class="fas fa-eye"></i> View Services
+                        <i class="fas fa-layer-group"></i> Browse Services
                     </a>
                 </div>
-                <div class="hero-stats">
-                    <div class="stat">
-                        <h3>50,000+</h3>
-                        <p>Orders Completed</p>
+                <div class="hero-badges">
+                    <div class="badge">
+                        <i class="fas fa-clock"></i>
+                        <span>Instant start</span>
                     </div>
-                    <div class="stat">
-                        <h3>99.4%</h3>
-                        <p>Success Rate</p>
+                    <div class="badge">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Buyer protection</span>
                     </div>
-                    <div class="stat">
-                        <h3>24/7</h3>
-                        <p>Support Available</p>
+                    <div class="badge">
+                        <i class="fas fa-headset"></i>
+                        <span>24/7 live chat</span>
                     </div>
+                </div>
+            </div>
+            <div class="hero-panel">
+                <div class="panel-card">
+                    <div class="panel-header">
+                        <h3>Quick Order</h3>
+                        <span class="panel-pill">Live rates</span>
+                    </div>
+                    <div class="panel-body">
+                        <label class="panel-label" for="service">Service Category</label>
+                        <div class="panel-field">
+                            <i class="fab fa-instagram"></i>
+                            <select id="service">
+                                <option>Instagram Followers</option>
+                                <option>TikTok Likes</option>
+                                <option>YouTube Views</option>
+                                <option>Facebook Page Likes</option>
+                            </select>
+                        </div>
+                        <label class="panel-label" for="quantity">Quantity</label>
+                        <div class="panel-field">
+                            <i class="fas fa-hashtag"></i>
+                            <input id="quantity" type="text" placeholder="1000" />
+                        </div>
+                        <div class="panel-summary">
+                            <div>
+                                <p>Start time</p>
+                                <h4>0-15 min</h4>
+                            </div>
+                            <div>
+                                <p>Price</p>
+                                <h4>$2.49 / 1K</h4>
+                            </div>
+                        </div>
+                        <a href="auth/signup.html" class="btn btn-primary btn-block">
+                            <i class="fas fa-paper-plane"></i> Place Order
+                        </a>
+                    </div>
+                </div>
+                <div class="panel-stats">
+                    <div>
+                        <h4>120K+</h4>
+                        <p>Daily orders</p>
+                    </div>
+                    <div>
+                        <h4>98.9%</h4>
+                        <p>Success rate</p>
+                    </div>
+                    <div>
+                        <h4>4.9/5</h4>
+                        <p>Client rating</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="section trust">
+        <div class="container">
+            <div class="trust-grid">
+                <div>
+                    <h2>Trusted by agencies, creators, and resellers.</h2>
+                    <p>Manage every campaign from one dashboard with clear analytics, automated status updates, and a global provider network.</p>
+                </div>
+                <div class="trust-logos">
+                    <div class="logo-pill">CreatorHub</div>
+                    <div class="logo-pill">AdSprint</div>
+                    <div class="logo-pill">GrowthLoop</div>
+                    <div class="logo-pill">Spark Media</div>
                 </div>
             </div>
         </div>
@@ -68,35 +146,36 @@
     <!-- Features Section -->
     <section id="features" class="section features">
         <div class="container">
-            <h2 class="section-title">Why Choose Our SMM Panel?</h2>
+            <h2 class="section-title">Why teams move to BoostSMM Now</h2>
+            <p class="section-subtitle">Everything you need to fulfill orders quickly with confidence.</p>
             <div class="feature-grid">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
+                        <i class="fas fa-gauge-high"></i>
                     </div>
-                    <h3>Fast Delivery</h3>
-                    <p>Start times as low as 5 minutes for most services with high-speed delivery.</p>
+                    <h3>Lightning-fast start</h3>
+                    <p>Most services begin within minutes and scale smoothly for large campaigns.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
+                        <i class="fas fa-layer-group"></i>
                     </div>
-                    <h3>High Quality</h3>
-                    <p>Premium services from real providers. No bots or fake engagement.</p>
+                    <h3>Curated providers</h3>
+                    <p>Multi-step vetting ensures stable delivery and consistent quality.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-headset"></i>
+                        <i class="fas fa-chart-line"></i>
                     </div>
-                    <h3>24/7 Support</h3>
-                    <p>Dedicated support team available round the clock to assist you.</p>
+                    <h3>Real-time tracking</h3>
+                    <p>Live order status, refill tracking, and completion insights in one view.</p>
                 </div>
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="fas fa-credit-card"></i>
+                        <i class="fas fa-wallet"></i>
                     </div>
-                    <h3>Secure Payments</h3>
-                    <p>Multiple payment options with SSL encryption for secure transactions.</p>
+                    <h3>Flexible payments</h3>
+                    <p>Pay with cards, crypto, or local methods with instant balance updates.</p>
                 </div>
             </div>
         </div>
@@ -105,16 +184,34 @@
     <!-- Services Preview -->
     <section id="services" class="section services-preview">
         <div class="container">
-            <h2 class="section-title">Popular Services</h2>
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Popular services</h2>
+                    <p class="section-subtitle">Pick from 50+ categories across major platforms.</p>
+                </div>
+                <a href="auth/signup.html" class="btn btn-outline">See all services</a>
+            </div>
             <div class="services-grid">
                 <div class="service-card">
                     <div class="service-icon">
                         <i class="fab fa-instagram"></i>
                     </div>
                     <h3>Instagram Followers</h3>
-                    <p>High-quality real followers</p>
+                    <p>Targeted growth with steady delivery</p>
                     <div class="service-price">
-                        <span class="price">$2.99</span>
+                        <span class="price">$2.49</span>
+                        <span class="per">/1000</span>
+                    </div>
+                    <a href="auth/signup.html" class="btn btn-primary">Order Now</a>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <h3>TikTok Likes</h3>
+                    <p>Boost engagement and reach</p>
+                    <div class="service-price">
+                        <span class="price">$1.89</span>
                         <span class="per">/1000</span>
                     </div>
                     <a href="auth/signup.html" class="btn btn-primary">Order Now</a>
@@ -124,9 +221,9 @@
                         <i class="fab fa-youtube"></i>
                     </div>
                     <h3>YouTube Views</h3>
-                    <p>High retention views</p>
+                    <p>High retention campaigns</p>
                     <div class="service-price">
-                        <span class="price">$1.99</span>
+                        <span class="price">$2.19</span>
                         <span class="per">/1000</span>
                     </div>
                     <a href="auth/signup.html" class="btn btn-primary">Order Now</a>
@@ -136,16 +233,145 @@
                         <i class="fab fa-facebook"></i>
                     </div>
                     <h3>Facebook Likes</h3>
-                    <p>Real page likes</p>
+                    <p>Build credibility and trust</p>
                     <div class="service-price">
-                        <span class="price">$3.99</span>
+                        <span class="price">$3.19</span>
                         <span class="per">/1000</span>
                     </div>
                     <a href="auth/signup.html" class="btn btn-primary">Order Now</a>
                 </div>
             </div>
-            <div class="text-center mt-4">
-                <a href="auth/signup.html" class="btn btn-primary btn-lg">View All 50+ Services</a>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section steps">
+        <div class="container">
+            <h2 class="section-title">How it works</h2>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <span>01</span>
+                    <h3>Create your account</h3>
+                    <p>Sign up in seconds and top up your wallet with your preferred method.</p>
+                </div>
+                <div class="step-card">
+                    <span>02</span>
+                    <h3>Place your order</h3>
+                    <p>Select a service, set quantity, and launch the campaign instantly.</p>
+                </div>
+                <div class="step-card">
+                    <span>03</span>
+                    <h3>Track in real time</h3>
+                    <p>Monitor progress, refill status, and completion from your dashboard.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="section pricing">
+        <div class="container">
+            <h2 class="section-title">Plans that scale with you</h2>
+            <p class="section-subtitle">Choose the model that fits your agency or creator team.</p>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <p class="pricing-desc">Best for creators getting started.</p>
+                    <div class="pricing-value">$0</div>
+                    <span class="pricing-term">per month</span>
+                    <ul>
+                        <li>Access to 50+ services</li>
+                        <li>Standard delivery speeds</li>
+                        <li>Email support</li>
+                    </ul>
+                    <a href="auth/signup.html" class="btn btn-outline btn-block">Start free</a>
+                </div>
+                <div class="pricing-card highlighted">
+                    <div class="ribbon">Most Popular</div>
+                    <h3>Growth</h3>
+                    <p class="pricing-desc">For agencies managing client work.</p>
+                    <div class="pricing-value">$29</div>
+                    <span class="pricing-term">per month</span>
+                    <ul>
+                        <li>Priority provider access</li>
+                        <li>Dedicated account manager</li>
+                        <li>Automated order reports</li>
+                    </ul>
+                    <a href="auth/signup.html" class="btn btn-primary btn-block">Start Growth</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>Enterprise</h3>
+                    <p class="pricing-desc">Custom SLA and API access.</p>
+                    <div class="pricing-value">Custom</div>
+                    <span class="pricing-term">contact sales</span>
+                    <ul>
+                        <li>Private provider sourcing</li>
+                        <li>White-label dashboard</li>
+                        <li>24/7 priority support</li>
+                    </ul>
+                    <a href="auth/signup.html" class="btn btn-outline btn-block">Talk to sales</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section testimonials">
+        <div class="container">
+            <h2 class="section-title">Loved by growth teams</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p>“The delivery speed and reporting gave us the confidence to scale client campaigns without worry.”</p>
+                    <div>
+                        <h4>Sarah J.</h4>
+                        <span>Agency Owner</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p>“Simple interface, great support, and the pricing makes sense for bulk orders.”</p>
+                    <div>
+                        <h4>Ahmed K.</h4>
+                        <span>Reseller</span>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p>“We moved three brands over in a day. The API and tracking are rock solid.”</p>
+                    <div>
+                        <h4>Lisa M.</h4>
+                        <span>Growth Lead</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section faq">
+        <div class="container">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Frequently asked questions</h2>
+                    <p class="section-subtitle">Everything you need to get started quickly.</p>
+                </div>
+                <a href="auth/signup.html" class="btn btn-outline">Get started</a>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-card">
+                    <h3>How fast do orders start?</h3>
+                    <p>Most services start within minutes. Each listing includes clear delivery estimates.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>Is there an API?</h3>
+                    <p>Yes. Growth and Enterprise plans include API access for automated ordering.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>What payment methods are supported?</h3>
+                    <p>Pay with cards, crypto, and local gateways. Balance updates instantly.</p>
+                </div>
+                <div class="faq-card">
+                    <h3>Can I resell services?</h3>
+                    <p>Absolutely. Use our pricing tiers to offer services to your own clients.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -154,11 +380,16 @@
     <section class="cta">
         <div class="container">
             <div class="cta-content">
-                <h2>Ready to Boost Your Social Media?</h2>
-                <p>Join thousands of satisfied customers. Sign up now and get $5 free balance!</p>
-                <a href="auth/signup.html" class="btn btn-primary btn-lg">
-                    <i class="fas fa-gift"></i> Get $5 Free Balance
-                </a>
+                <h2>Ready to grow faster?</h2>
+                <p>Join thousands of teams using BoostSMM Now to deliver results every day.</p>
+                <div class="cta-actions">
+                    <a href="auth/signup.html" class="btn btn-primary btn-lg">
+                        <i class="fas fa-gift"></i> Get $5 Free Balance
+                    </a>
+                    <a href="#pricing" class="btn btn-outline btn-lg">
+                        Compare plans
+                    </a>
+                </div>
             </div>
         </div>
     </section>
@@ -168,8 +399,8 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-col">
-                    <h3><i class="fas fa-rocket"></i> SMMPanel</h3>
-                    <p>Best SMM Services Provider Since 2024</p>
+                    <h3><i class="fas fa-rocket"></i> BoostSMM Now</h3>
+                    <p>Smart SMM panel built for modern growth teams.</p>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-facebook"></i></a>
                         <a href="#"><i class="fab fa-twitter"></i></a>
@@ -181,9 +412,9 @@
                     <h4>Services</h4>
                     <ul>
                         <li><a href="#">Instagram Services</a></li>
+                        <li><a href="#">TikTok Services</a></li>
                         <li><a href="#">YouTube Services</a></li>
                         <li><a href="#">Facebook Services</a></li>
-                        <li><a href="#">TikTok Services</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -191,8 +422,8 @@
                     <ul>
                         <li><a href="#">About Us</a></li>
                         <li><a href="#">Contact</a></li>
-                        <li><a href="#">FAQ</a></li>
                         <li><a href="#">Blog</a></li>
+                        <li><a href="#">Affiliate</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -206,7 +437,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2024 SMMPanel. All rights reserved.</p>
+                <p>&copy; 2024 BoostSMM Now. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -215,7 +446,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    
+
     <!-- App JS -->
     <script>
         // Firebase Config
@@ -228,10 +459,10 @@
             appId: "1:822614801525:web:4d27524aa2a1a84c068c3c",
             measurementId: "G-PQCEDCMZMZ"
         };
-        
+
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
-        
+
         // Mobile Menu Toggle
         document.querySelector('.nav-toggle').addEventListener('click', () => {
             document.querySelector('.nav-menu').classList.toggle('active');
